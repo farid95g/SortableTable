@@ -40,3 +40,7 @@ table tbody tr:nth-child(2n) {
 table tbody tr:hover {
   background-color: rgb(245, 245, 245);
 }
+
+span.sort {
+  cursor: pointer;
+}

@@ -1,11 +1,7 @@
 const table = document.querySelector("table");
 const tableHeader = document.querySelector("table thead");
 const tableBody = document.querySelector("table tbody");
-
-/** Testing Area */
-console.log(table);
-console.log(tableHeader);
-console.log(tableBody);
+const sortBtn = document.querySelectorAll(".sort");
 
 fetch('https://jsonplaceholder.typicode.com/todos')
   .then(response => response.json())
@@ -23,3 +19,17 @@ fetch('https://jsonplaceholder.typicode.com/todos')
       tableBody.innerHTML += row;
     })
   );
+  
+sortBtn.forEach((btn, i) => {
+  btn.addEventListener("click", e => {
+    const rows = document.querySelectorAll("tbody tr");
+    const cells = [];
+    rows.forEach(row => {
+      cells.push(row.children[i].textContent);
+    })
+    const sorted = cells.sort();
+    console.log(sorted)
+  });
+})
+
+/** Testing Area Below */
