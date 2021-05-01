@@ -1,5 +1,6 @@
 const tableBody = document.querySelector("table tbody");
 const sortBtn = document.querySelectorAll(".sort");
+const nextBtn = document.querySelector("li.next");
 
 /**
  * icons when column will be sorted:
@@ -36,3 +37,16 @@ function fillTable(num) {
 };
 
 document.addEventListener("DOMContentLoaded", fillTable(10));
+
+function createPagination() {
+  quantity = toDoService("https://jsonplaceholder.typicode.com/todos", data => {
+    const length = data.length / 10;
+    for (i = 0; i < length; i++) {
+      const pagination = `
+        <li class="page-item"><a class="page-link" href="#">${i + 1}</a></li>
+      `;
+      nextBtn.insertAdjacentHTML("beforebegin", pagination);
+    }
+  });
+}
+createPagination();
