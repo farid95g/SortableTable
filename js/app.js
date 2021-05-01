@@ -38,15 +38,26 @@ function fillTable(num) {
 
 document.addEventListener("DOMContentLoaded", fillTable(10));
 
-function createPagination() {
-  quantity = toDoService("https://jsonplaceholder.typicode.com/todos", data => {
+function nextPagination(num) {
+  toDoService("https://jsonplaceholder.typicode.com/todos", data => {
     const length = data.length / 10;
-    for (i = 0; i < length; i++) {
-      const pagination = `
-        <li class="page-item"><a class="page-link" href="#">${i + 1}</a></li>
-      `;
-      nextBtn.insertAdjacentHTML("beforebegin", pagination);
+    if (num < length) {
+      document.querySelectorAll(".page-nums").forEach(num => {
+        num.remove();
+      })
+      for (i = num; i < num + 5; i++) {
+        const pagination = `
+          <li class="page-item page-nums"><a class="page-link" href="#">${i + 1}</a></li>
+        `;
+        nextBtn.insertAdjacentHTML("beforebegin", pagination);
+      }
     }
   });
 }
-createPagination();
+nextPagination(0);
+
+nextBtn.addEventListener("click", e => {
+  const lastPagElem = nextBtn.previousElementSibling.querySelector("a").textContent;
+  nextPagination(Number(lastPagElem));
+  e.preventDefault();
+})
