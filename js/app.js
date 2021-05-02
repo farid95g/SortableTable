@@ -1,27 +1,25 @@
-const tableBody = document.querySelector("table tbody");
-const sortBtn = document.querySelectorAll(".sort");
-const nextBtn = document.querySelector("li.next");
+(async function () {
+  const data = await fetch("https://jsonplaceholder.typicode.com/todos")
+    .then((response) => response.json())
+    .then(data =>  data)
+    .catch(error => console.error(error));
 
-/**
- * icons when column will be sorted:
- * <i class="fas fa-sort-numeric-up-alt"></i>
- * <i class="fas fa-sort-alpha-up-alt"></i>
- */
+  /** DOM variables */
+  const tableBody = document.querySelector("table tbody");
+  const sortBtn = document.querySelectorAll(".sort");
+  const pageNums = document.querySelector("li.page-nums");
+  const previousBtn = document.querySelector("li.previous");
+  const nextBtn = document.querySelector("li.next");
 
-function toDoService(url, cb) {
-  try {
-    fetch(url)
-      .then(response => response.json())
-      .then(data => cb(data));
-  } catch (ex) {
-    console.log(`Failed! ${ex}.`);
-  } finally {
-    console.log("Success!");
-  }
-}
+  /**
+  * icons when column will be sorted:
+  * <i class="fas fa-sort-numeric-up-alt"></i>
+  * <i class="fas fa-sort-alpha-up-alt"></i>
+  */
 
-function fillTable(num) {
-  toDoService("https://jsonplaceholder.typicode.com/todos", data => {
+
+  /** function for filling table with data */
+  function fillTable(num) {
     data.filter(d => d.id <= num).forEach(todo => {
       let row = `
         <tr>
@@ -33,31 +31,46 @@ function fillTable(num) {
       `;
       tableBody.insertAdjacentHTML("beforeend", row);
     });
-  });
-};
+  };
 
-document.addEventListener("DOMContentLoaded", fillTable(10));
+  /** filling table with first 10 data when page first loads */
+  document.addEventListener("DOMContentLoaded", fillTable(10));
 
-function nextPagination(num) {
-  toDoService("https://jsonplaceholder.typicode.com/todos", data => {
+
+  /** function for creating pagination list */
+  function createPagination() {
     const length = data.length / 10;
-    if (num < length) {
-      document.querySelectorAll(".page-nums").forEach(num => {
-        num.remove();
-      })
-      for (i = num; i < num + 5; i++) {
+      for (let i = length; i > 0; i--) {
         const pagination = `
-          <li class="page-item page-nums"><a class="page-link" href="#">${i + 1}</a></li>
+          <li class="page-item"><a class="page-link" href="#">${i}</a></li>
         `;
-        nextBtn.insertAdjacentHTML("beforebegin", pagination);
+        pageNums.querySelector("ul").insertAdjacentHTML("afterbegin", pagination);
       }
-    }
-  });
-}
-nextPagination(0);
+  }
 
-nextBtn.addEventListener("click", e => {
-  const lastPagElem = nextBtn.previousElementSibling.querySelector("a").textContent;
-  nextPagination(Number(lastPagElem));
-  e.preventDefault();
-})
+  /** creating pagination when page first loads */
+  createPagination();
+
+
+  /** pagination variables */
+  let i = 1;
+  const paginationLength = data.length / 50;
+
+  /** function for changing the pagination numbers on click of next button */
+  nextBtn.addEventListener("click", e => {
+    if (i < paginationLength) {
+      pageNums.querySelector("ul").style.transform = `translateX(${i * -225}px)`;
+      i++;
+    }
+    e.preventDefault();
+  });
+
+  /** function for changing the pagination numbers on click of next button */
+  previousBtn.addEventListener("click", e => {
+      if (i > 1) {
+        pageNums.querySelector("ul").style.transform = `translateX(${(i - 2) * -225}px)`;
+        i--;
+      }
+    e.preventDefault();
+  });
+})();

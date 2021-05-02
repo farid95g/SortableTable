@@ -44,3 +44,18 @@ table tbody tr:hover {
 span.sort {
   cursor: pointer;
 }
+
+li.page-nums {
+  overflow-x: hidden;
+}
+
+li.page-nums ul {
+  width: 225px;
+  transition: transform .5s;
+}
+
+li.page-nums ul li {
+  min-width: 45px;
+  width: 45px;
+  text-align: center;
+}
