@@ -1,7 +1,7 @@
 (async function () {
   const data = await fetch("https://jsonplaceholder.typicode.com/todos")
     .then((response) => response.json())
-    .then(data =>  data)
+    .then(data => data)
     .catch(error => console.error(error));
 
   /** DOM variables */
@@ -19,8 +19,8 @@
 
 
   /** function for filling table with data */
-  function fillTable(num) {
-    data.filter(d => d.id <= num).forEach(todo => {
+  function fillTable(startNum, endNum) {
+    data.filter((d, i) => i >= startNum && i <= endNum).forEach(todo => {
       let row = `
         <tr>
           <td scope="row" class="px-4">${todo.userId}</td>
@@ -34,8 +34,12 @@
   };
 
   /** filling table with first 10 data when page first loads */
-  document.addEventListener("DOMContentLoaded", fillTable(10));
+  document.addEventListener("DOMContentLoaded", fillTable(0, 9));
 
+  /** function for cleaning table */
+  function cleanTable() {
+    tableBody.querySelectorAll("tr").forEach(tr => tr.remove());
+  }
 
   /** function for creating pagination list */
   function createPagination() {
@@ -72,5 +76,14 @@
         i--;
       }
     e.preventDefault();
+  });
+
+  /** function for paginations */
+  pageNums.querySelectorAll("ul li").forEach((num, i) => {
+    num.addEventListener("click", e => {
+      cleanTable();
+      fillTable(i * 10, (i * 10) + 9);
+      e.preventDefault();
+    });
   });
 })();
