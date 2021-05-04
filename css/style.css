@@ -54,8 +54,21 @@ li.page-nums ul {
   transition: transform .5s;
 }
 
-li.page-nums ul li {
+li.page-item {
   min-width: 45px;
   width: 45px;
   text-align: center;
+}
+
+li.page-item a {
+  box-shadow: none !important;
+}
+
+li.page-nums li.page-item a {
+  color: rgba(0, 0, 0, .6);
+}
+
+li.page-nums .page-item:first-child a {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }

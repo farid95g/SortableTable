@@ -10,6 +10,10 @@
   const pageNums = document.querySelector("li.page-nums");
   const previousBtn = document.querySelector("li.previous");
   const nextBtn = document.querySelector("li.next");
+  
+  /** pagination variables */
+  let i = 1;
+  const paginationLength = data.length / 50;
 
   /**
   * icons when column will be sorted:
@@ -46,7 +50,7 @@
     const length = data.length / 10;
       for (let i = length; i > 0; i--) {
         const pagination = `
-          <li class="page-item"><a class="page-link" href="#">${i}</a></li>
+          <li class="page-item ${i === 1 ? 'active' : ''}"><a class="page-link" href="#">${i}</a></li>
         `;
         pageNums.querySelector("ul").insertAdjacentHTML("afterbegin", pagination);
       }
@@ -54,11 +58,6 @@
 
   /** creating pagination when page first loads */
   createPagination();
-
-
-  /** pagination variables */
-  let i = 1;
-  const paginationLength = data.length / 50;
 
   /** function for changing the pagination numbers on click of next button */
   nextBtn.addEventListener("click", e => {
@@ -78,10 +77,18 @@
     e.preventDefault();
   });
 
+  /** function for making the clicked pagination number active */
+
+  function makeActivePage(previousNum, currentNum) {
+    previousNum.classList.remove("active");
+    currentNum.classList.add("active");
+  }
+
   /** function for paginations */
   pageNums.querySelectorAll("ul li").forEach((num, i) => {
     num.addEventListener("click", e => {
       cleanTable();
+      makeActivePage(pageNums.querySelector("ul li.active"), num);
       fillTable(i * 10, (i * 10) + 9);
       e.preventDefault();
     });
