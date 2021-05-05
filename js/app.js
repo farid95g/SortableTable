@@ -18,6 +18,7 @@
   /** sorting variables */
   let sortedByUserId = false;
   let sortedByTaskId = false;
+  let sortedByTaskTitle = false;
 
   /**
   * icons when column will be sorted:
@@ -130,4 +131,20 @@
   }
 
   document.querySelector("th.task-id").addEventListener("click", sortByTaskId);
+
+  /** function for sorting according to task description */
+  function sortByTaskTitle() {
+    const activePage = document.querySelector("li.page-nums li.page-item.active");
+    const index = [...pageNums.querySelectorAll("ul li")].indexOf(activePage);
+    if (!sortedByTaskTitle) {
+      data.sort((d1, d2) => d2['title'].localeCompare(d1['title']));
+    } else {
+      data.sort((d1, d2) => d1['title'].localeCompare(d2['title']));
+    }
+    cleanTable();
+    fillTable(index * 10, (index * 10) + 9);
+    sortedByTaskTitle = !sortedByTaskTitle;
+  }
+
+  document.querySelector("th.task-title").addEventListener("click", sortByTaskTitle);
 })();
