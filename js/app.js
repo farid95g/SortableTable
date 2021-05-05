@@ -15,6 +15,10 @@
   let i = 1;
   const paginationLength = data.length / 50;
 
+  /** sorting variables */
+  let sortedByUserId = false;
+  let sortedByTaskId = false;
+
   /**
   * icons when column will be sorted:
   * <i class="fas fa-sort-numeric-up-alt"></i>
@@ -93,4 +97,37 @@
       e.preventDefault();
     });
   });
+
+  /** function for sorting according to user id */
+  function sortByUserId() {
+    const activePage = document.querySelector("li.page-nums li.page-item.active");
+    const index = [...pageNums.querySelectorAll("ul li")].indexOf(activePage);
+    if (!sortedByUserId) {
+      data.sort((d1, d2) => d2.userId - d1.userId);
+    } else {
+      data.sort((d1, d2) => d1.userId - d2.userId);
+    }
+    cleanTable();
+    fillTable(index * 10, (index * 10) + 9);
+    console.log(data);
+    sortedByUserId = !sortedByUserId;
+  }
+
+  document.querySelector("th.user-id").addEventListener("click", sortByUserId);
+
+  /** function for sorting according to task id */
+  function sortByTaskId() {
+    const activePage = document.querySelector("li.page-nums li.page-item.active");
+    const index = [...pageNums.querySelectorAll("ul li")].indexOf(activePage);
+    if (!sortedByTaskId) {
+      data.sort((d1, d2) => d2.id - d1.id);
+    } else {
+      data.sort((d1, d2) => d1.id - d2.id);
+    }
+    cleanTable();
+    fillTable(index * 10, (index * 10) + 9);
+    sortedByTaskId = !sortedByTaskId;
+  }
+
+  document.querySelector("th.task-id").addEventListener("click", sortByTaskId);
 })();

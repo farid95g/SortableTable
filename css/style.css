@@ -72,3 +72,8 @@ li.page-nums .page-item:first-child a {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
+
+li.page-nums .page-item:last-child a {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
