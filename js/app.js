@@ -19,6 +19,7 @@
   let sortedByUserId = false;
   let sortedByTaskId = false;
   let sortedByTaskTitle = false;
+  let sortedByTaskCompletion = false;
 
   /**
   * icons when column will be sorted:
@@ -147,4 +148,20 @@
   }
 
   document.querySelector("th.task-title").addEventListener("click", sortByTaskTitle);
+
+  /** function for sorting according to task completion */
+  function sortByTaskCompletion() {
+    const activePage = document.querySelector("li.page-nums li.page-item.active");
+    const index = [...pageNums.querySelectorAll("ul li")].indexOf(activePage);
+    if (!sortedByTaskCompletion) {
+      data.sort((d1, d2) => Number(Boolean(d2.completed)) - Number(Boolean(d1.completed)));
+    } else {
+      data.sort((d1, d2) => Number(Boolean(d1.completed)) - Number(Boolean(d2.completed)));
+    }
+    cleanTable();
+    fillTable(index * 10, (index * 10) + 9);
+    sortedByTaskCompletion = !sortedByTaskCompletion;
+  }
+
+  document.querySelector("th.task-completion").addEventListener("click", sortByTaskCompletion);
 })();
