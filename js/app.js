@@ -5,62 +5,28 @@
     .catch(error => console.error(error));
   
   const table = new Table(data);
-
-  /** pagination variables */
-  let i = 1;
-  const paginationLength = data.length / 50;
-
-  
+  const pagination = new Pagination(data);
 
   /** filling table with first 10 data when page first loads */
   document.addEventListener("DOMContentLoaded", table.getData(0, 9).fill(tBody));
 
-  /** function for creating pagination list */
-  function createPagination() {
-    const length = data.length / 10;
-      for (let i = length; i > 0; i--) {
-        const pagination = `
-          <li class="page-item ${i === 1 ? 'active' : ''}"><a class="page-link" href="#">${i}</a></li>
-        `;
-        pageNums.querySelector("ul").insertAdjacentHTML("afterbegin", pagination);
-      }
-  }
-
   /** creating pagination when page first loads */
-  createPagination();
+  pagination.insert(pageNums.querySelector("ul"));
 
-  /** function for changing the pagination numbers on click of next button */
+  /** next button click function */
   nextBtn.addEventListener("click", e => {
-    if (i < paginationLength) {
-      pageNums.querySelector("ul").style.transform = `translateX(${i * -225}px)`;
-      i++;
-    }
-    e.preventDefault();
+    pagination.next(e, pageNums.querySelector("ul"));
   });
 
-  /** function for changing the pagination numbers on click of next button */
+  /** previous button click function */
   previousBtn.addEventListener("click", e => {
-      if (i > 1) {
-        pageNums.querySelector("ul").style.transform = `translateX(${(i - 2) * -225}px)`;
-        i--;
-      }
-    e.preventDefault();
+    pagination.previous(e, pageNums.querySelector("ul"));
   });
 
-  /** function for making the clicked pagination number active */
-
-  function makeActivePage(previousNum, currentNum) {
-    previousNum.classList.remove("active");
-    currentNum.classList.add("active");
-  }
-
-  /** function for paginations */
+  /** pagination elements click function */
   pageNums.querySelectorAll("ul li").forEach((num, i) => {
     num.addEventListener("click", e => {
-      cleanTable();
-      makeActivePage(pageNums.querySelector("ul li.active"), num);
-      fillTable(i * 10, (i * 10) + 9);
-      e.preventDefault();
+      pagination.showPage(e, table, tBody, pageNums.querySelector("ul li.active"), num, i);
     });
   });
 
@@ -75,7 +41,6 @@
     }
     cleanTable();
     fillTable(index * 10, (index * 10) + 9);
-    console.log(data);
     sortedByUserId = !sortedByUserId;
   }
 
