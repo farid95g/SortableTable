@@ -3,53 +3,17 @@
     .then((response) => response.json())
     .then(data => data)
     .catch(error => console.error(error));
-
-  /** DOM variables */
-  const tableBody = document.querySelector("table tbody");
-  const sortBtn = document.querySelectorAll(".sort");
-  const pageNums = document.querySelector("li.page-nums");
-  const previousBtn = document.querySelector("li.previous");
-  const nextBtn = document.querySelector("li.next");
   
+  const table = new Table(data);
+
   /** pagination variables */
   let i = 1;
   const paginationLength = data.length / 50;
 
-  /** sorting variables */
-  let sortedByUserId = false;
-  let sortedByTaskId = false;
-  let sortedByTaskTitle = false;
-  let sortedByTaskCompletion = false;
-
-  /**
-  * icons when column will be sorted:
-  * <i class="fas fa-sort-numeric-up-alt"></i>
-  * <i class="fas fa-sort-alpha-up-alt"></i>
-  */
-
-
-  /** function for filling table with data */
-  function fillTable(startNum, endNum) {
-    data.filter((d, i) => i >= startNum && i <= endNum).forEach(todo => {
-      let row = `
-        <tr>
-          <td scope="row" class="px-4">${todo.userId}</td>
-          <td class="px-4">${todo.id}</td>
-          <td class="px-4">${todo.title}</td>
-          <td class="px-4">${todo.completed}</td>
-        </tr>
-      `;
-      tableBody.insertAdjacentHTML("beforeend", row);
-    });
-  };
+  
 
   /** filling table with first 10 data when page first loads */
-  document.addEventListener("DOMContentLoaded", fillTable(0, 9));
-
-  /** function for cleaning table */
-  function cleanTable() {
-    tableBody.querySelectorAll("tr").forEach(tr => tr.remove());
-  }
+  document.addEventListener("DOMContentLoaded", table.getData(0, 9).fill(tBody));
 
   /** function for creating pagination list */
   function createPagination() {
@@ -154,9 +118,9 @@
     const activePage = document.querySelector("li.page-nums li.page-item.active");
     const index = [...pageNums.querySelectorAll("ul li")].indexOf(activePage);
     if (!sortedByTaskCompletion) {
-      data.sort((d1, d2) => Number(Boolean(d2.completed)) - Number(Boolean(d1.completed)));
+      data.sort((d1, d2) => Number(d2.completed) - Number(d1.completed));
     } else {
-      data.sort((d1, d2) => Number(Boolean(d1.completed)) - Number(Boolean(d2.completed)));
+      data.sort((d1, d2) => Number(d1.completed) - Number(d2.completed));
     }
     cleanTable();
     fillTable(index * 10, (index * 10) + 9);
