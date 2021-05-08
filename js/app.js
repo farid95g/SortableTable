@@ -6,9 +6,10 @@
   
   const table = new Table(data);
   const pagination = new Pagination(data);
+  const sort = new Sort(data);
 
   /** filling table with first 10 data when page first loads */
-  document.addEventListener("DOMContentLoaded", table.getData(0, 9).fill(tBody));
+  document.addEventListener("DOMContentLoaded", table.getData(data, 0, 9).fill(tBody));
 
   /** creating pagination when page first loads */
   pagination.insert(pageNums.querySelector("ul"));
@@ -30,21 +31,13 @@
     });
   });
 
-  /** function for sorting according to user id */
-  function sortByUserId() {
+  document.querySelector("th.user-id").addEventListener("click", () => {
     const activePage = document.querySelector("li.page-nums li.page-item.active");
     const index = [...pageNums.querySelectorAll("ul li")].indexOf(activePage);
-    if (!sortedByUserId) {
-      data.sort((d1, d2) => d2.userId - d1.userId);
-    } else {
-      data.sort((d1, d2) => d1.userId - d2.userId);
-    }
-    cleanTable();
-    fillTable(index * 10, (index * 10) + 9);
-    sortedByUserId = !sortedByUserId;
-  }
-
-  document.querySelector("th.user-id").addEventListener("click", sortByUserId);
+    const sortedData = sort.byUserId();
+    table.clean(tBody);
+    table.getData(sortedData, index * 10, (index * 10) + 9).fill(tBody);
+  });
 
   /** function for sorting according to task id */
   function sortByTaskId() {

@@ -7,7 +7,6 @@ const nextBtn = document.querySelector("li.next");
 
 
 /** sorting variables */
-let sortedByUserId = false;
 let sortedByTaskId = false;
 let sortedByTaskTitle = false;
 let sortedByTaskCompletion = false;

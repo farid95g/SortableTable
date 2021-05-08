@@ -4,8 +4,8 @@ class Table {
   }
 
   /** function for getting 10 rows of data */
-  getData(start, end) {
-    this.currentData = this.data.filter((d, i) => i >= start && i <= end);
+  getData(nData, start, end) {
+    this.currentData = nData.filter((d, i) => i >= start && i <= end);
     return this;
   }
 
@@ -22,7 +22,7 @@ class Table {
       <tr>
         <td scope="row" class="px-4">${userId}</td>
         <td class="px-4">${id}</td>
-        <td class="px-4">${title}</td>
+        <td class="px-4 text-capitalize">${title}</td>
         <td class="px-4">${completed}</td>
       </tr>
     `;

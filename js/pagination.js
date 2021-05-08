@@ -48,7 +48,7 @@ class Pagination {
   showPage(e, t, tB, prev, curr, i) {
     t.clean(tB);
     this.makeActive(prev, curr);
-    t.getData(i * 10, (i * 10) + 9).fill(tB);
+    t.getData(this.data, i * 10, (i * 10) + 9).fill(tB);
     e.preventDefault();
   }
 }
