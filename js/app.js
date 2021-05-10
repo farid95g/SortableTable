@@ -31,35 +31,31 @@
     });
   });
 
-  document.querySelector("th.user-id").addEventListener("click", () => {
+  /** function for refreshing table after sorting data */
+  const refreshTable = (sData) => {
     const activePage = document.querySelector("li.page-nums li.page-item.active");
     const index = [...pageNums.querySelectorAll("ul li")].indexOf(activePage);
-    const sortedData = sort.byUserId();
     table.clean(tBody);
-    table.getData(sortedData, index * 10, (index * 10) + 9).fill(tBody);
+    table.getData(sData, index * 10, (index * 10) + 9).fill(tBody);
+  }
+
+  document.querySelector("th.user-id").addEventListener("click", () => {
+    const sortedData = sort.byUserId();
+    refreshTable(sortedData);
   });
 
   document.querySelector("th.task-id").addEventListener("click", () => {
-    const activePage = document.querySelector("li.page-nums li.page-item.active");
-    const index = [...pageNums.querySelectorAll("ul li")].indexOf(activePage);
     const sortedData = sort.byTaskId();
-    table.clean(tBody);
-    table.getData(sortedData, index * 10, (index * 10) + 9).fill(tBody);
+    refreshTable(sortedData);
   });
 
   document.querySelector("th.task-title").addEventListener("click", () => {
-    const activePage = document.querySelector("li.page-nums li.page-item.active");
-    const index = [...pageNums.querySelectorAll("ul li")].indexOf(activePage);
     const sortedData = sort.byTaskTitle();
-    table.clean(tBody);
-    table.getData(sortedData, index * 10, (index * 10) + 9).fill(tBody);
+    refreshTable(sortedData);
   });
 
   document.querySelector("th.task-completion").addEventListener("click", () => {
-    const activePage = document.querySelector("li.page-nums li.page-item.active");
-    const index = [...pageNums.querySelectorAll("ul li")].indexOf(activePage);
     const sortedData = sort.byTaskCompletion();
-    table.clean(tBody);
-    table.getData(sortedData, index * 10, (index * 10) + 9).fill(tBody);
+    refreshTable(sortedData);
   });
 })();

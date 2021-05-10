@@ -11,39 +11,42 @@ class Sort {
     };
   }
 
+  sortByColumn(col, prop) {
+    console.log(typeof(this.data[0][col]));
+    if (typeof(this.data[0][col]) === "number") {
+      this.data = !this.sorted[prop]
+        ? this.data = this.data.sort((u1, u2) => u2[col] - u1[col])
+        : this.data = this.data.sort((u1, u2) => u1[col] - u2[col]);
+    } else if (typeof(this.data[0][col]) === "string") {
+      this.data = !this.sorted[prop]
+        ? this.data = this.data.sort((u1, u2) => u2[col].localeCompare(u1[col]))
+        : this.data = this.data.sort((u1, u2) => u1[col].localeCompare(u2[col]));
+    } else if (typeof(this.data[0][col]) === "boolean") {
+      this.data = !this.sorted.byTaskCompletion
+        ? this.data = this.data.sort((u1, u2) => Number(u2[col]) - Number(u1[col]))
+        : this.data = this.data.sort((u1, u2) => Number(u1[col]) - Number(u2[col]));
+    }
+    this.sorted[prop] = !this.sorted[prop];
+    return this.data;
+  }
+
   /** function for sorting according to user id */
   byUserId() {
-    this.data = !this.sorted.byUserId
-      ? this.data = this.data.sort((u1, u2) => u2.userId - u1.userId)
-      : this.data = this.data.sort((u1, u2) => u1.userId - u2.userId);
-    this.sorted.byUserId = !this.sorted.byUserId;
-    return this.data;
+    return this.sortByColumn("userId", "byUserId");
   }
 
   /** function for sorting according to task id */
   byTaskId() {
-    this.data = !this.sorted.byTaskId
-      ? this.data = this.data.sort((u1, u2) => u2.id - u1.id)
-      : this.data = this.data.sort((u1, u2) => u1.id - u2.id);
-    this.sorted.byTaskId = !this.sorted.byTaskId;
-    return this.data;
+    return this.sortByColumn("id", "byTaskId");
   }
 
   /** function for sorting according to task description */
   byTaskTitle() {
-    this.data = !this.sorted.byTaskTitle
-      ? this.data = this.data.sort((u1, u2) => u2["title"].localeCompare(u1["title"]))
-      : this.data = this.data.sort((u1, u2) => u1["title"].localeCompare(u2["title"]));
-    this.sorted.byTaskTitle = !this.sorted.byTaskTitle;
-    return this.data;
+    return this.sortByColumn("title", "byTaskTitle");
   }
 
   /** function for sorting according to task completion */
   byTaskCompletion() {
-    this.data = !this.sorted.byTaskCompletion
-      ? this.data = this.data.sort((u1, u2) => Number(u2.completed) - Number(u1.completed))
-      : this.data = this.data.sort((u1, u2) => Number(u1.completed) - Number(u2.completed));
-    this.sorted.byTaskCompletion = !this.sorted.byTaskCompletion;
-    return this.data;
+    return this.sortByColumn("completed", "byTaskCompletion");
   }
 }
