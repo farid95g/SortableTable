@@ -39,51 +39,27 @@
     table.getData(sortedData, index * 10, (index * 10) + 9).fill(tBody);
   });
 
-  /** function for sorting according to task id */
-  function sortByTaskId() {
+  document.querySelector("th.task-id").addEventListener("click", () => {
     const activePage = document.querySelector("li.page-nums li.page-item.active");
     const index = [...pageNums.querySelectorAll("ul li")].indexOf(activePage);
-    if (!sortedByTaskId) {
-      data.sort((d1, d2) => d2.id - d1.id);
-    } else {
-      data.sort((d1, d2) => d1.id - d2.id);
-    }
-    cleanTable();
-    fillTable(index * 10, (index * 10) + 9);
-    sortedByTaskId = !sortedByTaskId;
-  }
+    const sortedData = sort.byTaskId();
+    table.clean(tBody);
+    table.getData(sortedData, index * 10, (index * 10) + 9).fill(tBody);
+  });
 
-  document.querySelector("th.task-id").addEventListener("click", sortByTaskId);
-
-  /** function for sorting according to task description */
-  function sortByTaskTitle() {
+  document.querySelector("th.task-title").addEventListener("click", () => {
     const activePage = document.querySelector("li.page-nums li.page-item.active");
     const index = [...pageNums.querySelectorAll("ul li")].indexOf(activePage);
-    if (!sortedByTaskTitle) {
-      data.sort((d1, d2) => d2['title'].localeCompare(d1['title']));
-    } else {
-      data.sort((d1, d2) => d1['title'].localeCompare(d2['title']));
-    }
-    cleanTable();
-    fillTable(index * 10, (index * 10) + 9);
-    sortedByTaskTitle = !sortedByTaskTitle;
-  }
+    const sortedData = sort.byTaskTitle();
+    table.clean(tBody);
+    table.getData(sortedData, index * 10, (index * 10) + 9).fill(tBody);
+  });
 
-  document.querySelector("th.task-title").addEventListener("click", sortByTaskTitle);
-
-  /** function for sorting according to task completion */
-  function sortByTaskCompletion() {
+  document.querySelector("th.task-completion").addEventListener("click", () => {
     const activePage = document.querySelector("li.page-nums li.page-item.active");
     const index = [...pageNums.querySelectorAll("ul li")].indexOf(activePage);
-    if (!sortedByTaskCompletion) {
-      data.sort((d1, d2) => Number(d2.completed) - Number(d1.completed));
-    } else {
-      data.sort((d1, d2) => Number(d1.completed) - Number(d2.completed));
-    }
-    cleanTable();
-    fillTable(index * 10, (index * 10) + 9);
-    sortedByTaskCompletion = !sortedByTaskCompletion;
-  }
-
-  document.querySelector("th.task-completion").addEventListener("click", sortByTaskCompletion);
+    const sortedData = sort.byTaskCompletion();
+    table.clean(tBody);
+    table.getData(sortedData, index * 10, (index * 10) + 9).fill(tBody);
+  });
 })();
