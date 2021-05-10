@@ -43,12 +43,4 @@ class Pagination {
     previous.classList.remove("active");
     current.classList.add("active");
   }
-
-  /** method for fetching data according to selected number */
-  showPage(e, t, tB, prev, curr, i) {
-    t.clean(tB);
-    this.makeActive(prev, curr);
-    t.getData(this.data, i * 10, (i * 10) + 9).fill(tB);
-    e.preventDefault();
-  }
 }

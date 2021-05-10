@@ -27,7 +27,10 @@
   /** pagination elements click handler */
   pageNums.querySelectorAll("ul li").forEach((num, i) => {
     num.addEventListener("click", e => {
-      pagination.showPage(e, table, tBody, pageNums.querySelector("ul li.active"), num, i);
+      table.clean(tBody);
+      pagination.makeActive(pageNums.querySelector("ul li.active"), num);
+      table.getData(data, i * 10, (i * 10) + 9).fill(tBody);
+      e.preventDefault();
     });
   });
 
