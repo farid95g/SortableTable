@@ -47,11 +47,30 @@
     table.getData(sData, index * 10, (index * 10) + 9).fill(tBody);
   }
 
+  /** function for changing icon when data is sorted */
+  const changeIcon = (elm) => {
+    const icon = elm.querySelector("i");
+    if (icon.classList.contains("d-none")) {
+      icon.classList.remove("d-none");
+    } else {
+      if (icon.className.indexOf("up") !== -1) {
+        icon.className.indexOf("numeric") !== -1
+          ? icon.classList.replace("fa-sort-numeric-up", "fa-sort-numeric-down")
+          : icon.classList.replace("fa-sort-alpha-up", "fa-sort-alpha-down");
+      } else {
+        icon.className.indexOf("numeric") !== -1
+          ? icon.classList.replace("fa-sort-numeric-down", "fa-sort-numeric-up")
+          : icon.classList.replace("fa-sort-alpha-down", "fa-sort-alpha-up");
+      }
+    }
+  }
+
   /** table headers click handler for sorting table data */
   tHeaders.forEach(th => {
     th.addEventListener("click", e => {
       const sortedData = sort[th.dataset.func]();
       refreshTable(sortedData);
+      changeIcon(th.querySelector("span"));
     })
   })
 })();
